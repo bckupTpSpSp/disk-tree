@@ -14,7 +14,7 @@ void tree::File::List(bool /*bFollow*/, bool /*bRecursive*/, const std::string &
 	out << Name() << " [" << _size.toString() << "]" << std::endl;
 }
 
-File * tree::File::Parse(rapidjson::Value & json)
+std::shared_ptr<File> tree::File::Parse(rapidjson::Value & json)
 {
 	if (!json.HasMember("name"))
 		return nullptr;
@@ -23,5 +23,5 @@ File * tree::File::Parse(rapidjson::Value & json)
 	if (size < tree::Size())
 		return nullptr;
 	
-	return new File(json["name"].GetString(), size);
+	return std::shared_ptr<File> { new File(json["name"].GetString(), size) };
 }
